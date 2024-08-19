@@ -1,0 +1,3 @@
+displayName = Grenades Expanded
+author = Rapoulas
+version = 0.1

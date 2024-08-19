@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "t4w+nZ+/5y6/KpGfCS66kh+AxuXGLJxb6lcN5VBDbpMrnHXuQtlQgG+hXsr7D242qXQzhJXRevTdGvlj3wsCww==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Rafael\\Documents\\my games\\Terraria\\tModLoader\\ModSources\\GrenadesExpanded\\GrenadesExpanded.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Rafael\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
+  ],
+  "logs": []
+}

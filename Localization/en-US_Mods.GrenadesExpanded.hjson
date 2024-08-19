@@ -1,0 +1,16 @@
+Items: {
+	RollingThunder: {
+		DisplayName: Rolling Thunder
+		Tooltip: ""
+	}
+
+	RollingThunderItem: {
+		DisplayName: Rolling Thunder Item
+		Tooltip: ""
+	}
+}
+
+Projectiles: {
+	ExplosionProj.DisplayName: Explosion Proj
+	RollingThunderProjectile.DisplayName: Rolling Thunder Projectile
+}
