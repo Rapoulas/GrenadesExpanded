@@ -8,7 +8,10 @@ namespace GrenadesExpanded.Content
 {
     class ExplosionProj : ModProjectile
     {
-        int diameter;
+        float Radius {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -25,7 +28,8 @@ namespace GrenadesExpanded.Content
 
         public override void AI()
         {   
-            diameter = (int)Projectile.ai[0];
+            int diameter;
+            diameter = (int)Projectile.ai[0] * 2;
             Projectile.Resize(diameter, diameter);
         }
 
@@ -76,7 +80,6 @@ namespace GrenadesExpanded.Content
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            int radius = diameter/2;
             Rectangle center = new((int)Projectile.Center.X, (int)Projectile.Center.Y, 1, 1);
             if (center.Intersects(targetHitbox)) 
                 return true;
@@ -94,7 +97,7 @@ namespace GrenadesExpanded.Content
             if (bottomRightDistance < distanceToClosestPoint)
                 distanceToClosestPoint = bottomRightDistance;
 
-            return distanceToClosestPoint <= radius;
+            return distanceToClosestPoint <= Radius;
         }
     }
 }

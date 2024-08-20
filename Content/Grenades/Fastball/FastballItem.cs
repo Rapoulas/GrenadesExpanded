@@ -1,4 +1,3 @@
-using GrenadesExpanded.Content.Grenades.RollingThunder;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -7,21 +6,21 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace GrenadesExpanded.Content.Grenades
+namespace GrenadesExpanded.Content.Grenades.Fastball
 {
-    public class RollingThunderItem : ModItem
+    public class FastballItem : ModItem
     {
-        readonly float Radius = 80;
-        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius*10);
+        readonly float Radius = 20;
+        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius * 10);
         public override string Texture => "GrenadesExpanded/Content/PlaceholderItemSprite";
         public override void SetDefaults()
         {
-            Item.shoot = ModContent.ProjectileType<RollingThunderProjectile>();
+            Item.shoot = ModContent.ProjectileType<FastballProjectile>();
             Item.width = 28;
             Item.height = 30;
-            Item.shootSpeed = 7f;
+            Item.shootSpeed = 15f;
             Item.noMelee = true;
-            Item.damage = 75;
+            Item.damage = 250;
             Item.useTime = 60;
             Item.useAnimation = 60;
             Item.rare = ItemRarityID.LightRed;
@@ -37,7 +36,8 @@ namespace GrenadesExpanded.Content.Grenades
             int newDamage = damage;
             int timeLeft;
 
-            switch (type){
+            switch (type)
+            {
                 case ProjectileID.Grenade:
                     ammoUsed = 0;
                     break;
@@ -51,19 +51,22 @@ namespace GrenadesExpanded.Content.Grenades
                     ammoUsed = 3;
                     break;
             }
-            
-            if (ammoUsed == 1){
+
+            if (ammoUsed == 1)
+            {
                 timeLeft = 360;
             }
-            else {
+            else
+            {
                 timeLeft = 180;
             }
 
-            if (ammoUsed == 3){
-                newDamage = damage/10;
+            if (ammoUsed == 3)
+            {
+                newDamage = damage / 10;
             }
 
-            Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<RollingThunderProjectile>(), newDamage, knockback, player.whoAmI, Radius, ammoUsed);
+            Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<FastballProjectile>(), newDamage, knockback, player.whoAmI, Radius, ammoUsed);
             proj.timeLeft = timeLeft;
             return false;
         }

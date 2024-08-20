@@ -6,11 +6,25 @@ Items: {
 
 	RollingThunderItem: {
 		DisplayName: Rolling Thunder Item
-		Tooltip: ""
+		Tooltip:
+			'''
+			{0} Explosion Radius
+			placeholder text
+			'''
+	}
+
+	FastballItem: {
+		DisplayName: Fastball Item
+		Tooltip:
+			'''
+			{0} Explosion Radius
+			placeholder text
+			'''
 	}
 }
 
 Projectiles: {
 	ExplosionProj.DisplayName: Explosion Proj
 	RollingThunderProjectile.DisplayName: Rolling Thunder Projectile
+	FastballProjectile.DisplayName: Fastball Projectile
 }

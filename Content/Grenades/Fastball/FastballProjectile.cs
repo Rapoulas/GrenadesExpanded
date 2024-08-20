@@ -7,11 +7,10 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace GrenadesExpanded.Content.Grenades.RollingThunder
+namespace GrenadesExpanded.Content.Grenades.Fastball
 {
-    public class RollingThunderProjectile : ModProjectile
+    public class FastballProjectile : ModProjectile
     {
-        public int explosionCooldown = 0;
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.Grenade}";
         enum Grenades{
             Normal,
@@ -34,20 +33,17 @@ namespace GrenadesExpanded.Content.Grenades.RollingThunder
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.knockBack = 20f;
+            Projectile.knockBack = 30f;
+            Projectile.extraUpdates = 1;
         }
 
         public override void AI()
         {
             if (Projectile.velocity.Y == 0f && Projectile.velocity.X != 0f)
             {
-                if (AmmoUsed == Grenades.Bouncy)
+                if (AmmoUsed != Grenades.Bouncy)
                 {
                     Projectile.velocity.X *= 0.99f;
-                }
-                else
-                {
-                    Projectile.velocity.X *= 0.97f;
                 }
 
                 if (Projectile.velocity.X > -0.01 && Projectile.velocity.X < 0.01)
@@ -58,11 +54,11 @@ namespace GrenadesExpanded.Content.Grenades.RollingThunder
 
             if (AmmoUsed == Grenades.Bouncy)
             {
-                Projectile.velocity.Y += 0.2f;
+                Projectile.velocity.Y += 0.1f;
             }
             else
             {
-                Projectile.velocity.Y += 0.4f;
+                Projectile.velocity.Y += 0.2f;
             }
             Projectile.rotation += Projectile.velocity.X * 0.1f;
 
@@ -119,13 +115,6 @@ namespace GrenadesExpanded.Content.Grenades.RollingThunder
                     }
                 }
             }
-
-            if (IsInsideTile() && explosionCooldown <= 0 && AmmoUsed == Grenades.Sticky){
-                SpawnExplosion(Radius);
-                explosionCooldown = 30;
-            }
-
-            explosionCooldown--;
         }
 
         void SpawnExplosion(float radius){
@@ -141,30 +130,10 @@ namespace GrenadesExpanded.Content.Grenades.RollingThunder
                 if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f){
                     Projectile.velocity.Y = oldVelocity.Y * -0.9f;
                 }
+                return false;
             }
-            else{
-                if (Projectile.velocity.X != oldVelocity.X && Math.Abs(oldVelocity.X) > 1f){
-                    Projectile.velocity.X = oldVelocity.X * -0.5f;
-                }
-                if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f){
-                    Projectile.velocity.Y = oldVelocity.Y * -0.5f;
-                }
-            }
-
-            if (explosionCooldown <= 0){
-                SpawnExplosion(Radius);
-                explosionCooldown = 30;
-
-                if (AmmoUsed == Grenades.Bee){
-                    int rand = Main.rand.Next(15, 25);
-                    for (int i = 0; i < rand; i++){
-                        float speedX = Main.rand.Next(-35, 36) * 0.02f;
-                        float speedY = Main.rand.Next(-35, 36) * 0.02f;
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, Main.player[Projectile.owner].beeType(), Main.player[Projectile.owner].beeDamage(Projectile.damage), Main.player[Projectile.owner].beeKB(0f), Main.myPlayer);
-                    }
-                }
-            }
-            return false;
+            
+            return true;
         }
 
         public override void OnKill(int timeLeft)
@@ -180,7 +149,5 @@ namespace GrenadesExpanded.Content.Grenades.RollingThunder
                 }
             }
         }
-
-        bool IsInsideTile() => Collision.SolidCollision(Projectile.TopLeft, Projectile.width, Projectile.height);
     }
 }
