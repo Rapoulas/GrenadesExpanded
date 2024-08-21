@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GrenadesExpanded")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59c93b70ce156b7d39220188a64914a0eb2ed77b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9e4aeb0211153ae3e8bac75b0cef7e931e614726")]
 [assembly: System.Reflection.AssemblyProductAttribute("GrenadesExpanded")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GrenadesExpanded")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
