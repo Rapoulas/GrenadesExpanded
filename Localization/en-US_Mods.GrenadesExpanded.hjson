@@ -21,10 +21,16 @@ Items: {
 			placeholder text
 			'''
 	}
+
+	CupidsBoomItem: {
+		Tooltip: ""
+		DisplayName: Cupids Boom Item
+	}
 }
 
 Projectiles: {
 	ExplosionProj.DisplayName: Explosion Proj
 	RollingThunderProjectile.DisplayName: Rolling Thunder Projectile
 	FastballProjectile.DisplayName: Fastball Projectile
+	CupidsBoomProjectile.DisplayName: Cupids Boom Projectile
 }

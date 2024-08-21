@@ -44,7 +44,7 @@ namespace GrenadesExpanded.Content
 
         public override void OnKill(int timeLeft) {
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < Radius/2; i++) {
 				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 2f);
 				dust.velocity *= 1.4f;
 			}

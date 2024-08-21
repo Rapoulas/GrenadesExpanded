@@ -7,9 +7,9 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace GrenadesExpanded.Content.Grenades.Fastball
+namespace GrenadesExpanded.Content.Grenades.CupidsBoom
 {
-    public class FastballProjectile : ModProjectile
+    public class CupidsBoomProjectile : ModProjectile
     {
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.Grenade}";
         enum Grenades{
@@ -33,17 +33,21 @@ namespace GrenadesExpanded.Content.Grenades.Fastball
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.knockBack = 30f;
-            Projectile.extraUpdates = 1;
+            Projectile.knockBack = 12f;
+            Projectile.penetrate = 5;
         }
 
         public override void AI()
         {
             if (Projectile.velocity.Y == 0f && Projectile.velocity.X != 0f)
             {
-                if (AmmoUsed != Grenades.Bouncy)
+                if (AmmoUsed == Grenades.Bouncy)
                 {
                     Projectile.velocity.X *= 0.99f;
+                }
+                else
+                {
+                    Projectile.velocity.X *= 0.97f;
                 }
 
                 if (Projectile.velocity.X > -0.01 && Projectile.velocity.X < 0.01)
@@ -54,11 +58,11 @@ namespace GrenadesExpanded.Content.Grenades.Fastball
 
             if (AmmoUsed == Grenades.Bouncy)
             {
-                Projectile.velocity.Y += 0.1f;
+                Projectile.velocity.Y += 0.2f;
             }
             else
             {
-                Projectile.velocity.Y += 0.2f;
+                Projectile.velocity.Y += 0.4f;
             }
             Projectile.rotation += Projectile.velocity.X * 0.1f;
 
@@ -117,8 +121,8 @@ namespace GrenadesExpanded.Content.Grenades.Fastball
             }
         }
 
-        void SpawnExplosion(float radius){
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<ExplosionProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner, radius);      
+        void SpawnExplosion(float radius, int damage){
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<ExplosionProj>(), damage, Projectile.knockBack, Projectile.owner, radius);      
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -130,24 +134,27 @@ namespace GrenadesExpanded.Content.Grenades.Fastball
                 if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f){
                     Projectile.velocity.Y = oldVelocity.Y * -0.9f;
                 }
-                return false;
             }
-            else if (AmmoUsed != Grenades.Sticky){
+            else{
                 if (Projectile.velocity.X != oldVelocity.X && Math.Abs(oldVelocity.X) > 1f){
-                    Projectile.velocity.X = oldVelocity.X * -0.2f;
+                    Projectile.velocity.X = oldVelocity.X * -0.5f;
                 }
                 if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f){
-                    Projectile.velocity.Y = oldVelocity.Y * -0.2f;
+                    Projectile.velocity.Y = oldVelocity.Y * -0.5f;
                 }
-                return false;
             }
-            
-            return true;
+
+            return false;
         }
+
+        public override void OnHitNPC (NPC target, NPC.HitInfo hit, int damageDone) {
+            Projectile.damage = (int)(Projectile.damage * 1.1);
+            SpawnExplosion(Radius, Projectile.damage);
+		}
 
         public override void OnKill(int timeLeft)
         {
-            SpawnExplosion(Radius);
+            SpawnExplosion(Radius, Projectile.damage);
             if (AmmoUsed == Grenades.Bee){
                 int rand = Main.rand.Next(15, 25);
                 for (int i = 0; i < rand; i++)
