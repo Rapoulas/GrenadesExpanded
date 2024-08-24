@@ -5,26 +5,37 @@ Items: {
 	}
 
 	RollingThunderItem: {
-		DisplayName: Rolling Thunder Item
+		DisplayName: Rolling Thunder
 		Tooltip:
 			'''
 			{0} Explosion Radius
-			placeholder text
+			Explodes on every bounce with a 0.5s cooldown
 			'''
 	}
 
 	FastballItem: {
-		DisplayName: Fastball Item
+		DisplayName: Fastball
 		Tooltip:
 			'''
 			{0} Explosion Radius
-			placeholder text
+			Extremely high grenade velocity
 			'''
 	}
 
 	CupidsBoomItem: {
+		Tooltip:
+			'''
+			{0} Explosion Radius
+			Pierces up to 5 enemies
+			Explodes on every enemy pierced
+			Increases damage for every enemy pierced
+			'''
+		DisplayName: Cupids Boom
+	}
+
+	HunterSeekerItem: {
+		DisplayName: Hunter Seeker Item
 		Tooltip: ""
-		DisplayName: Cupids Boom Item
 	}
 }
 
@@ -33,4 +44,5 @@ Projectiles: {
 	RollingThunderProjectile.DisplayName: Rolling Thunder Projectile
 	FastballProjectile.DisplayName: Fastball Projectile
 	CupidsBoomProjectile.DisplayName: Cupids Boom Projectile
+	HunterSeekerProjectile.DisplayName: Hunter Seeker Projectile
 }

@@ -11,7 +11,7 @@ namespace GrenadesExpanded.Content.Grenades.CupidsBoom
 {
     public class CupidsBoomProjectile : ModProjectile
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.Grenade}";
+        public override string Texture => "GrenadesExpanded/Content/Grenades/CupidsBoom/CupidsBoom";
         enum Grenades{
             Normal,
             Bouncy,
@@ -33,7 +33,7 @@ namespace GrenadesExpanded.Content.Grenades.CupidsBoom
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.knockBack = 12f;
+            Projectile.knockBack = 7f;
             Projectile.penetrate = 5;
         }
 
@@ -123,6 +123,16 @@ namespace GrenadesExpanded.Content.Grenades.CupidsBoom
 
         void SpawnExplosion(float radius, int damage){
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<ExplosionProj>(), damage, Projectile.knockBack, Projectile.owner, radius);      
+        
+            if (AmmoUsed == Grenades.Bee){
+                int rand = Main.rand.Next(15, 25);
+                for (int i = 0; i < rand; i++)
+                {
+                    float speedX = Main.rand.Next(-35, 36) * 0.02f;
+                    float speedY = Main.rand.Next(-35, 36) * 0.02f;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, Main.player[Projectile.owner].beeType(), Main.player[Projectile.owner].beeDamage(Projectile.damage), Main.player[Projectile.owner].beeKB(0f), Main.myPlayer);
+                }
+            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -150,20 +160,31 @@ namespace GrenadesExpanded.Content.Grenades.CupidsBoom
         public override void OnHitNPC (NPC target, NPC.HitInfo hit, int damageDone) {
             Projectile.damage = (int)(Projectile.damage * 1.1);
             SpawnExplosion(Radius, Projectile.damage);
+
+            for (int g = 0; g < 2; g++) {
+				var goreSpawnPosition = new Vector2(Projectile.position.X + Projectile.width / 2 - 24f, Projectile.position.Y + Projectile.height / 2 - 24f);
+				Gore gore = Gore.NewGoreDirect(Projectile.GetSource_FromThis(), goreSpawnPosition, default, 331, 1f);
+				gore.scale = 1.5f;
+				gore.velocity.X += 1.5f;
+				gore.velocity.Y += 1.5f;
+				gore = Gore.NewGoreDirect(Projectile.GetSource_FromThis(), goreSpawnPosition, default, 331, 1f);
+				gore.scale = 1.5f;
+				gore.velocity.X -= 1.5f;
+				gore.velocity.Y += 1.5f;
+				gore = Gore.NewGoreDirect(Projectile.GetSource_FromThis(), goreSpawnPosition, default, 331, 1f);
+				gore.scale = 1.5f;
+				gore.velocity.X += 1.5f;
+				gore.velocity.Y -= 1.5f;
+				gore = Gore.NewGoreDirect(Projectile.GetSource_FromThis(), goreSpawnPosition, default, 331, 1f);
+				gore.scale = 1.5f;
+				gore.velocity.X -= 1.5f;
+				gore.velocity.Y -= 1.5f;
+			}
 		}
 
         public override void OnKill(int timeLeft)
         {
             SpawnExplosion(Radius, Projectile.damage);
-            if (AmmoUsed == Grenades.Bee){
-                int rand = Main.rand.Next(15, 25);
-                for (int i = 0; i < rand; i++)
-                {
-                    float speedX = Main.rand.Next(-35, 36) * 0.02f;
-                    float speedY = Main.rand.Next(-35, 36) * 0.02f;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, Main.player[Projectile.owner].beeType(), Main.player[Projectile.owner].beeDamage(Projectile.damage), Main.player[Projectile.owner].beeKB(0f), Main.myPlayer);
-                }
-            }
         }
     }
 }

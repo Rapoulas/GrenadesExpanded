@@ -13,7 +13,7 @@ namespace GrenadesExpanded.Content.Grenades
     {
         readonly float Radius = 80;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius*10);
-        public override string Texture => "GrenadesExpanded/Content/PlaceholderItemSprite";
+        public override string Texture => "GrenadesExpanded/Content/Grenades/RollingThunder/RollingThunder";
         public override void SetDefaults()
         {
             Item.shoot = ModContent.ProjectileType<RollingThunderProjectile>();
@@ -29,6 +29,7 @@ namespace GrenadesExpanded.Content.Grenades
             Item.useStyle = ItemUseStyleID.Swing;
             Item.noUseGraphic = true;
             Item.useAmmo = ItemID.Grenade;
+            Item.knockBack = 8f;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

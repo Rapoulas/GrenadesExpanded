@@ -12,7 +12,7 @@ namespace GrenadesExpanded.Content.Grenades.RollingThunder
     public class RollingThunderProjectile : ModProjectile
     {
         public int explosionCooldown = 0;
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.Grenade}";
+        public override string Texture => "GrenadesExpanded/Content/Grenades/RollingThunder/RollingThunder";
         enum Grenades{
             Normal,
             Bouncy,
@@ -34,7 +34,7 @@ namespace GrenadesExpanded.Content.Grenades.RollingThunder
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.knockBack = 20f;
+            Projectile.knockBack = 8f;
         }
 
         public override void AI()
