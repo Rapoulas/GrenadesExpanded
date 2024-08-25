@@ -34,8 +34,13 @@ Items: {
 	}
 
 	HunterSeekerItem: {
-		DisplayName: Hunter Seeker Item
-		Tooltip: ""
+		DisplayName: Hunter Seeker
+		Tooltip:
+			'''
+			{0} Explosion Radius
+			Homes towards nearby enemies
+			Shoots bullets as it travels, consuming ammo
+			'''
 	}
 }
 

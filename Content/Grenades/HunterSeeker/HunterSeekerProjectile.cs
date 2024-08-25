@@ -43,6 +43,7 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
         public override void AI()
         {
             Player owner = Main.player[Projectile.owner];
+            NPC enemy = FindClosestNPC(1000);
 
             FalsePistol = new Item();
 
@@ -51,9 +52,14 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
             FalsePistol.damage = Projectile.damage/5;
             FalsePistol.knockBack = Projectile.knockBack/5;
 
+            if (shootTimer % 15 == 0 && AmmoUsed == Grenades.Bee && enemy != null){
+                float speedX = Main.rand.Next(-35, 36) * 0.02f;
+                float speedY = Main.rand.Next(-35, 36) * 0.02f;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, Main.player[Projectile.owner].beeType(), Main.player[Projectile.owner].beeDamage(Projectile.damage), Main.player[Projectile.owner].beeKB(0f), Main.myPlayer);
+            }
+
             if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
                 if (shootTimer >= 60){
-                    NPC enemy = FindClosestNPC(1000);
                     Vector2 velocity = Projectile.velocity;
                     velocity.Normalize();
                     velocity *= projSpeed;

@@ -10,8 +10,7 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
 {
     public class HunterSeekerItem : ModItem
     {
-        //Finish Synergy with beenade
-        readonly float Radius = 20;
+        readonly float Radius = 25;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius * 10);
         public override string Texture => "GrenadesExpanded/Content/Grenades/Fastball/Fastball";
         public override void SetDefaults()
@@ -30,6 +29,7 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
             Item.noUseGraphic = true;
             Item.useAmmo = ItemID.Grenade;
             Item.knockBack = 13f;
+            Item.autoReuse = true;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
