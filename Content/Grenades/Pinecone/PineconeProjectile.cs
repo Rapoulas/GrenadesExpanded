@@ -7,12 +7,10 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace GrenadesExpanded.Content.Grenades.HunterSeeker
+namespace GrenadesExpanded.Content.Grenades.Pinecone
 {
-    public class HunterSeekerProjectile : ModProjectile
+    public class PineconeProjectile : ModProjectile
     {
-        private static Item falsePistol = null;
-        int shootTimer = 0;
         public override string Texture => "GrenadesExpanded/Content/Grenades/Fastball/Fastball";
         enum Grenades{
             Normal,
@@ -28,7 +26,6 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
         float Radius {
             get => Projectile.ai[0];
         }
-        public static Item FalsePistol { get => falsePistol; set => falsePistol = value; }
 
         public override void SetDefaults()
         {
@@ -42,46 +39,33 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
 
         public override void AI()
         {
-            Player owner = Main.player[Projectile.owner];
-            NPC enemy = FindClosestNPC(1000);
+            if (Projectile.velocity.Y == 0f && Projectile.velocity.X != 0f)
+            {
+                if (AmmoUsed == Grenades.Bouncy)
+                {
+                    Projectile.velocity.X *= 0.99f;
+                }
+                else
+                {
+                    Projectile.velocity.X *= 0.97f;
+                }
 
-            FalsePistol = new Item();
-
-            FalsePistol.SetDefaults(ItemID.Revolver, true);
-
-            FalsePistol.damage = Projectile.damage/6;
-            FalsePistol.knockBack = Projectile.knockBack/5;
-
-            if (shootTimer % 15 == 0 && AmmoUsed == Grenades.Bee && enemy != null){
-                float speedX = Main.rand.Next(-35, 36) * 0.02f;
-                float speedY = Main.rand.Next(-35, 36) * 0.02f;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, Main.player[Projectile.owner].beeType(), Main.player[Projectile.owner].beeDamage(Projectile.damage), Main.player[Projectile.owner].beeKB(0f), Main.myPlayer);
-            }
-
-            if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-                if (shootTimer >= 60){
-                    Vector2 velocity = Projectile.velocity;
-                    velocity.Normalize();
-                    velocity *= projSpeed;
-                    
-                    if (enemy != null){
-                        velocity = Projectile.Center.DirectionTo(enemy.Center) * projSpeed;
-                    }
-                    
-                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity, projToShoot, damage, knockBack);
-                    proj.tileCollide = false;
-
-                    shootTimer = 0;
+                if (Projectile.velocity.X > -0.01 && Projectile.velocity.X < 0.01)
+                {
+                    Projectile.velocity.X = 0f;
                 }
             }
 
-            NPC target = FindClosestNPC(1000);
-            
-            if (target != null){
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.Center.DirectionTo(target.Center) * 5f, 0.05f);
+            if (AmmoUsed == Grenades.Bouncy)
+            {
+                Projectile.velocity.Y += 0.2f;
+            }
+            else
+            {
+                Projectile.velocity.Y += 0.4f;
             }
 
-            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+            Projectile.rotation += Projectile.velocity.X * 0.1f;
 
             if (AmmoUsed == Grenades.Sticky)
             {
@@ -136,14 +120,13 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
                     }
                 }
             }
-
-            shootTimer++;
         }
 
         void SpawnExplosion(float radius){
+            int rand;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<ExplosionProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner, radius);      
             if (AmmoUsed == Grenades.Bee){
-                int rand = Main.rand.Next(15, 25);
+                rand = Main.rand.Next(15, 25);
                 for (int i = 0; i < rand; i++)
                 {
                     float speedX = Main.rand.Next(-35, 36) * 0.02f;
@@ -151,40 +134,26 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, Main.player[Projectile.owner].beeType(), Main.player[Projectile.owner].beeDamage(Projectile.damage), Main.player[Projectile.owner].beeKB(0f), Main.myPlayer);
                 }
             }
-        }
 
-        public NPC FindClosestNPC(float maxDetectDistance) {
-			NPC closestNPC = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			for (int k = 0; k < Main.maxNPCs; k++) {
-				NPC target = Main.npc[k];
-				if (target.CanBeChasedBy()) {
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance) {
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestNPC = target;
-					}
-				}
-			}
-            return closestNPC;
+            rand = Main.rand.Next(5, 8);
+                for (int i = 0; i < rand; i++){
+                    Vector2 velocity = new(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(0, 1));
+                    velocity.Normalize();
+                    velocity.RotatedByRandom(MathHelper.ToRadians(360));
+                    velocity *= 17f;
+                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, velocity, ModContent.ProjectileType<PineconeShrapnelProj>(), 10, 3f);
+                }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if (AmmoUsed == Grenades.Bouncy){
-                if (Projectile.velocity.X != oldVelocity.X && Math.Abs(oldVelocity.X) > 1f){
-                    Projectile.velocity.X = oldVelocity.X * -0.9f;
-                }
-                if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f){
-                    Projectile.velocity.Y = oldVelocity.Y * -0.9f;
-                }
-                return false;
+            if (Projectile.velocity.X != oldVelocity.X && Math.Abs(oldVelocity.X) > 1f){
+                Projectile.velocity.X = oldVelocity.X * -0.9f;
             }
-
-            return true;
+            if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f){
+                Projectile.velocity.Y = oldVelocity.Y * -0.9f;
+            }
+            return false;
         }
 
         public override void OnKill(int timeLeft)

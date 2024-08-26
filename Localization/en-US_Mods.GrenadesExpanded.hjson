@@ -42,6 +42,11 @@ Items: {
 			Shoots bullets as it travels, consuming ammo
 			'''
 	}
+
+	PineconeItem: {
+		DisplayName: Pinecone Item
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -50,4 +55,6 @@ Projectiles: {
 	FastballProjectile.DisplayName: Fastball Projectile
 	CupidsBoomProjectile.DisplayName: Cupids Boom Projectile
 	HunterSeekerProjectile.DisplayName: Hunter Seeker Projectile
+	PineconeProjectile.DisplayName: Pinecone Projectile
+	PineconeShrapnelProj.DisplayName: Pinecone Shrapnel Proj
 }
