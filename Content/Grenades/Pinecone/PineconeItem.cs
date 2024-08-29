@@ -12,7 +12,7 @@ namespace GrenadesExpanded.Content.Grenades.Pinecone
     {
         readonly float Radius = 60;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius * 10);
-        public override string Texture => "GrenadesExpanded/Content/Grenades/Fastball/Fastball";
+        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
         public override void SetDefaults()
         {
             Item.shoot = ModContent.ProjectileType<PineconeProjectile>();

@@ -1,3 +1,4 @@
+using GrenadesExpanded.Content.Grenades.BlackHole;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -6,21 +7,21 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace GrenadesExpanded.Content.Grenades.HunterSeeker
+namespace GrenadesExpanded.Content.Grenades.CupidsBoom
 {
-    public class HunterSeekerItem : ModItem
+    public class BlackHoleItem : ModItem
     {
-        readonly float Radius = 25;
+        readonly float Radius = 90;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius * 10);
         public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
         public override void SetDefaults()
         {
-            Item.shoot = ModContent.ProjectileType<HunterSeekerProjectile>();
+            Item.shoot = ModContent.ProjectileType<BlackHoleProjectile>();
             Item.width = 28;
             Item.height = 30;
-            Item.shootSpeed = 5f;
+            Item.shootSpeed = 7f;
             Item.noMelee = true;
-            Item.damage = 150;
+            Item.damage = 40;
             Item.useTime = 60;
             Item.useAnimation = 60;
             Item.rare = ItemRarityID.LightRed;
@@ -28,7 +29,7 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
             Item.useStyle = ItemUseStyleID.Swing;
             Item.noUseGraphic = true;
             Item.useAmmo = ItemID.Grenade;
-            Item.knockBack = 13f;
+            Item.knockBack = 7f;
             Item.autoReuse = true;
         }
 
@@ -36,7 +37,7 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
         {
             float ammoUsed = 0;
             int newDamage = damage;
-            int timeLeft = 480;
+            int timeLeft;
 
             switch (type)
             {
@@ -54,12 +55,21 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
                     break;
             }
 
+            if (ammoUsed == 1)
+            {
+                timeLeft = 360;
+            }
+            else
+            {
+                timeLeft = 180;
+            }
+
             if (ammoUsed == 3)
             {
                 newDamage = damage / 10;
             }
 
-            Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<HunterSeekerProjectile>(), newDamage, knockback, player.whoAmI, Radius, ammoUsed);
+            Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<BlackHoleProjectile>(), newDamage, knockback, player.whoAmI, Radius, ammoUsed);
             proj.timeLeft = timeLeft;
             return false;
         }

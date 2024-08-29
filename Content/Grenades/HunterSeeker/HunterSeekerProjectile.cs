@@ -13,7 +13,7 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
     {
         private static Item falsePistol = null;
         int shootTimer = 0;
-        public override string Texture => "GrenadesExpanded/Content/Grenades/Fastball/Fastball";
+        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
         enum Grenades{
             Normal,
             Bouncy,

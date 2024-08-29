@@ -44,8 +44,21 @@ Items: {
 	}
 
 	PineconeItem: {
-		DisplayName: Pinecone Item
-		Tooltip: ""
+		DisplayName: Pinecone
+		Tooltip:
+			'''
+			{0} Explosion Radius
+			Shoots shrapnels in random directions on detonation
+			'''
+	}
+
+	BlackHoleItem: {
+		DisplayName: Black Hole
+		Tooltip:
+			'''
+			{0} Explosion Radius
+			Releases a singularity pulse every 1.5s that pulls enemeies towards it
+			'''
 	}
 }
 
@@ -57,4 +70,6 @@ Projectiles: {
 	HunterSeekerProjectile.DisplayName: Hunter Seeker Projectile
 	PineconeProjectile.DisplayName: Pinecone Projectile
 	PineconeShrapnelProj.DisplayName: Pinecone Shrapnel Proj
+	RecursionProjectile.DisplayName: Recursion Projectile
+	BlackHoleProjectile.DisplayName: Black Hole Projectile
 }

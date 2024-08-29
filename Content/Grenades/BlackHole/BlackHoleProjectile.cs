@@ -7,11 +7,11 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace GrenadesExpanded.Content.Grenades.CupidsBoom
+namespace GrenadesExpanded.Content.Grenades.BlackHole
 {
-    public class CupidsBoomProjectile : ModProjectile
+    public class BlackHoleProjectile : ModProjectile
     {
-        public override string Texture => "GrenadesExpanded/Content/Grenades/CupidsBoom/CupidsBoom";
+        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
         enum Grenades{
             Normal,
             Bouncy,
@@ -34,7 +34,6 @@ namespace GrenadesExpanded.Content.Grenades.CupidsBoom
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.knockBack = 7f;
-            Projectile.penetrate = 5;
         }
 
         public override void AI()
@@ -158,28 +157,7 @@ namespace GrenadesExpanded.Content.Grenades.CupidsBoom
         }
 
         public override void OnHitNPC (NPC target, NPC.HitInfo hit, int damageDone) {
-            Projectile.damage = (int)(Projectile.damage * 1.1);
             SpawnExplosion(Radius, Projectile.damage);
-
-            for (int g = 0; g < 10; g++) {
-				var goreSpawnPosition = new Vector2(Projectile.position.X + Projectile.width / 2 - 24f, Projectile.position.Y + Projectile.height / 2 - 24f);
-				Gore gore = Gore.NewGoreDirect(Projectile.GetSource_FromThis(), goreSpawnPosition, default, 331, 1f);
-				gore.scale = 1.5f;
-				gore.velocity.X += 3f;
-				gore.velocity.Y += 3f;
-				gore = Gore.NewGoreDirect(Projectile.GetSource_FromThis(), goreSpawnPosition, default, 331, 1f);
-				gore.scale = 1.5f;
-				gore.velocity.X -= 3f;
-				gore.velocity.Y += 3f;
-				gore = Gore.NewGoreDirect(Projectile.GetSource_FromThis(), goreSpawnPosition, default, 331, 1f);
-				gore.scale = 1.5f;
-				gore.velocity.X += 3f;
-				gore.velocity.Y -= 3f;
-				gore = Gore.NewGoreDirect(Projectile.GetSource_FromThis(), goreSpawnPosition, default, 331, 1f);
-				gore.scale = 1.5f;
-				gore.velocity.X -= 3f;
-				gore.velocity.Y -= 3f;
-			}
 		}
 
         public override void OnKill(int timeLeft)
