@@ -11,7 +11,7 @@ namespace GrenadesExpanded.Content.Grenades.BlackHole
 {
     public class BlackHoleProjectile : ModProjectile
     {
-        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
+        public override string Texture => "GrenadesExpanded/Content/Grenades/BlackHole/BlackHole";
         enum Grenades{
             Normal,
             Bouncy,
@@ -117,6 +117,11 @@ namespace GrenadesExpanded.Content.Grenades.BlackHole
                         Projectile.velocity *= 0f;
                     }
                 }
+            }
+
+            if (Projectile.timeLeft == 150){
+                Main.NewText("A");
+                //do blackhole effect
             }
         }
 

@@ -7,13 +7,13 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace GrenadesExpanded.Content.Grenades.CupidsBoom
+namespace GrenadesExpanded.Content.Grenades.BlackHole
 {
     public class BlackHoleItem : ModItem
     {
         readonly float Radius = 90;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius * 10);
-        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
+        public override string Texture => "GrenadesExpanded/Content/Grenades/BlackHole/BlackHole";
         public override void SetDefaults()
         {
             Item.shoot = ModContent.ProjectileType<BlackHoleProjectile>();

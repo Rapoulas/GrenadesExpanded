@@ -11,7 +11,11 @@ namespace GrenadesExpanded.Content.Grenades.Pinecone
 {
     public class PineconeShrapnelProj : ModProjectile
     {
-        public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Stake;
+        public override string Texture => "GrenadesExpanded/Content/Grenades/Pinecone/Pinecone_Spike";
+
+        public override void SetStaticDefaults() {
+            Main.projFrames[Projectile.type] = 3;
+		}
         public override void SetDefaults()
         {
             Projectile.width = 8;
@@ -24,9 +28,14 @@ namespace GrenadesExpanded.Content.Grenades.Pinecone
             Projectile.idStaticNPCHitCooldown = 20;
         }
 
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.frame = Main.rand.Next(0, 3);
+        }
+
         public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
     }
 }

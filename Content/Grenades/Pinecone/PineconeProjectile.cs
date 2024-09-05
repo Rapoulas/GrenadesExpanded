@@ -11,7 +11,7 @@ namespace GrenadesExpanded.Content.Grenades.Pinecone
 {
     public class PineconeProjectile : ModProjectile
     {
-        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
+        public override string Texture => "GrenadesExpanded/Content/Grenades/Pinecone/Pinecone";
         enum Grenades{
             Normal,
             Bouncy,
@@ -135,9 +135,9 @@ namespace GrenadesExpanded.Content.Grenades.Pinecone
                 }
             }
 
-            rand = Main.rand.Next(5, 8);
+            rand = Main.rand.Next(9, 13);
                 for (int i = 0; i < rand; i++){
-                    Vector2 velocity = new(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0.25f));
+                    Vector2 velocity = new(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0f));
                     velocity.Normalize();
                     velocity.RotatedByRandom(MathHelper.ToRadians(360));
                     velocity *= 17f;
