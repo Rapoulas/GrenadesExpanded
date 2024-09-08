@@ -30,7 +30,7 @@ namespace GrenadesExpanded.Content.Grenades.BlackHole
         {
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.friendly = true;
+            Projectile.friendly = false;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.knockBack = 7f;
@@ -119,10 +119,16 @@ namespace GrenadesExpanded.Content.Grenades.BlackHole
                 }
             }
 
-            if (Projectile.timeLeft == 150){
-                Main.NewText("A");
-                //do blackhole effect
+            if (Projectile.timeLeft % 90 == 0){
+                foreach (NPC npc in Main.npc){
+                    Vector2 projCenterNew = new(Projectile.Center.X, Projectile.Center.Y - 100f);
+
+                    if (npc.Distance(projCenterNew) <= 600 && !npc.boss && npc.active && npc.knockBackResist != 0f){
+                        npc.velocity += npc.Center.DirectionTo(projCenterNew) * npc.Distance(projCenterNew) / 28;
+                    }
+                }
             }
+
         }
 
         void SpawnExplosion(float radius, int damage){
@@ -165,8 +171,7 @@ namespace GrenadesExpanded.Content.Grenades.BlackHole
             SpawnExplosion(Radius, Projectile.damage);
 		}
 
-        public override void OnKill(int timeLeft)
-        {
+        public override void OnKill(int timeLeft){
             SpawnExplosion(Radius, Projectile.damage);
         }
     }

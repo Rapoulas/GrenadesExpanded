@@ -21,7 +21,7 @@ namespace GrenadesExpanded.Content.Grenades.BlackHole
             Item.height = 30;
             Item.shootSpeed = 7f;
             Item.noMelee = true;
-            Item.damage = 40;
+            Item.damage = 100;
             Item.useTime = 60;
             Item.useAnimation = 60;
             Item.rare = ItemRarityID.LightRed;
@@ -57,11 +57,11 @@ namespace GrenadesExpanded.Content.Grenades.BlackHole
 
             if (ammoUsed == 1)
             {
-                timeLeft = 360;
+                timeLeft = 540;
             }
             else
             {
-                timeLeft = 180;
+                timeLeft = 360;
             }
 
             if (ammoUsed == 3)
