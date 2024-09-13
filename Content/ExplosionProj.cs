@@ -92,7 +92,7 @@ namespace GrenadesExpanded.Content
 				gore.velocity.Y -= 1.5f;
 			}
 
-            if (!BabyBoomProcced && player.GetModPlayer<MyPlayer>().hasBabyBoom != null){
+            if (!BabyBoomProcced && player.GetModPlayer<MyPlayer>().hasBabyBoom != null && Main.rand.NextFloat() <= 0.35f){
                 int newDamage = (int)(Projectile.damage * 0.5f);
                 int whoAmI = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, Projectile.type, newDamage, Projectile.knockBack, Projectile.owner, Projectile.ai[0] * 2f);
                 var proj = (ExplosionProj)Main.projectile[whoAmI].ModProjectile;
