@@ -57,7 +57,16 @@ Items: {
 		Tooltip:
 			'''
 			{0} Explosion Radius
-			Releases a singularity pulse every 1.5s that pulls enemeies towards it
+			Releases a singularity pulse every 1.5s that pulls enemies towards it
+			'''
+	}
+
+	BabyBoom: {
+		DisplayName: Baby Boom
+		Tooltip:
+			'''
+			Grenade explosions have a 35% chance to explode again
+			with double the radius, but 0.5x damage
 			'''
 	}
 }

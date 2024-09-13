@@ -11,7 +11,7 @@ namespace GrenadesExpanded.Content.Grenades.BlackHole
 {
     public class BlackHoleItem : ModItem
     {
-        readonly float Radius = 90;
+        readonly float Radius = 100;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius * 10);
         public override string Texture => "GrenadesExpanded/Content/Grenades/BlackHole/BlackHole";
         public override void SetDefaults()

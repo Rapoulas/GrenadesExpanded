@@ -1,3 +1,4 @@
+using GrenadesExpanded.Content.Players;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -8,6 +9,8 @@ namespace GrenadesExpanded.Content
 {
     class ExplosionProj : ModProjectile
     {
+        bool BabyBoomProcced = false;
+        bool delayedExplosion = false;
         float Radius {
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
@@ -28,9 +31,19 @@ namespace GrenadesExpanded.Content
 
         public override void AI()
         {   
-            int diameter;
-            diameter = (int)Projectile.ai[0] * 2;
-            Projectile.Resize(diameter, diameter);
+            if (delayedExplosion){
+                Projectile.timeLeft += 15;
+                delayedExplosion = false;
+                Projectile.friendly = false;
+                return;
+            }
+
+            if (Projectile.timeLeft <= 2){
+                Projectile.friendly = true;
+                int diameter;
+                diameter = (int)Projectile.ai[0] * 2;
+                Projectile.Resize(diameter, diameter);
+            }
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -44,6 +57,8 @@ namespace GrenadesExpanded.Content
 
         public override void OnKill(int timeLeft) {
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+            Player player = Main.player[Projectile.owner];
+
 			for (int i = 0; i < Radius/2; i++) {
 				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 2f);
 				dust.velocity *= 1.4f;
@@ -76,6 +91,14 @@ namespace GrenadesExpanded.Content
 				gore.velocity.X -= 1.5f;
 				gore.velocity.Y -= 1.5f;
 			}
+
+            if (!BabyBoomProcced && player.GetModPlayer<MyPlayer>().hasBabyBoom != null){
+                int newDamage = (int)(Projectile.damage * 0.5f);
+                int whoAmI = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, Projectile.type, newDamage, Projectile.knockBack, Projectile.owner, Projectile.ai[0] * 2f);
+                var proj = (ExplosionProj)Main.projectile[whoAmI].ModProjectile;
+                proj.BabyBoomProcced = true;
+                proj.delayedExplosion = true;
+            }
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
