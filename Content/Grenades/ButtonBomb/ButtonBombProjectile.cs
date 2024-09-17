@@ -1,16 +1,22 @@
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace GrenadesExpanded.Content.Grenades.HunterSeeker
+namespace GrenadesExpanded.Content.Grenades.ButtonBomb
 {
-    public class HunterSeekerProjectile : ModProjectile
+    public class ButtonBombProjectile : ModProjectile
     {
-        private static Item falsePistol = null;
-        int shootTimer = 0;
-       public override string Texture => "GrenadesExpanded/Content/Grenades/HunterSeeker/HunterSeeker";
+        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
+        SoundStyle clickSFX = new("GrenadesExpanded/Content/Assets/ButtonBombSoundEffect"){
+            Volume = 0.5f,
+            PitchVariance = 0.2f
+        };
+        int originalDamage;
+        int[] whoAmIList;
         enum Grenades{
             Normal,
             Bouncy,
@@ -25,8 +31,6 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
         float Radius {
             get => Projectile.ai[0];
         }
-        public static Item FalsePistol { get => falsePistol; set => falsePistol = value; }
-
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -35,45 +39,39 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.knockBack = 7f;
+            Projectile.penetrate = 7;
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            if (AmmoUsed == Grenades.Bouncy){
+                Projectile.penetrate += 2;
+                whoAmIList = new int[9];
+            }
+            else {
+                whoAmIList = new int[7];
+            }
+            originalDamage = Projectile.damage;
+            Projectile.damage = 0;
         }
 
         public override void AI()
         {
-            Player owner = Main.player[Projectile.owner];
-            NPC enemy = FindClosestNPC(1000);
-
-            FalsePistol = new Item();
-
-            FalsePistol.SetDefaults(ItemID.Revolver, true);
-
-            FalsePistol.damage = Projectile.damage/6;
-            FalsePistol.knockBack = Projectile.knockBack/5;
-
-            if (shootTimer % 15 == 0 && AmmoUsed == Grenades.Bee && enemy != null){
-                float speedX = Main.rand.Next(-35, 36) * 0.02f;
-                float speedY = Main.rand.Next(-35, 36) * 0.02f;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, Main.player[Projectile.owner].beeType(), Main.player[Projectile.owner].beeDamage(Projectile.damage), Main.player[Projectile.owner].beeKB(0f), Main.myPlayer);
-            }
-
-            if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-                if (shootTimer >= 60){
-                    Vector2 velocity = Projectile.velocity;
-                    velocity.Normalize();
-                    velocity *= projSpeed;
-                    
-                    if (enemy != null){
-                        velocity = Projectile.Center.DirectionTo(enemy.Center) * projSpeed;
-                    }
-                    
-                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity, projToShoot, damage, knockBack);
-                    proj.tileCollide = false;
-
-                    shootTimer = 0;
-                }
-            }
+            NPC enemy = FindClosestNPC(500);
             
             if (enemy != null){
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.Center.DirectionTo(enemy.Center) * 5f, 0.05f);
+                if (Projectile.Center.Distance(enemy.Center) < 20){
+                    Projectile.penetrate--;
+                    whoAmIList[Projectile.penetrate] = enemy.whoAmI;
+                    SoundEngine.PlaySound(clickSFX, Projectile.Center);
+                }
+
+                if (AmmoUsed == Grenades.Bouncy){
+                    Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.Center.DirectionTo(enemy.Center) * 12f, 0.16f);
+                }
+                else {
+                    Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.Center.DirectionTo(enemy.Center) * 12f, 0.1f);
+                }
             }
 
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
@@ -131,21 +129,6 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
                     }
                 }
             }
-
-            shootTimer++;
-        }
-
-        void SpawnExplosion(float radius){
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<ExplosionProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner, radius);      
-            if (AmmoUsed == Grenades.Bee){
-                int rand = Main.rand.Next(15, 25);
-                for (int i = 0; i < rand; i++)
-                {
-                    float speedX = Main.rand.Next(-35, 36) * 0.02f;
-                    float speedY = Main.rand.Next(-35, 36) * 0.02f;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, Main.player[Projectile.owner].beeType(), Main.player[Projectile.owner].beeDamage(Projectile.damage), Main.player[Projectile.owner].beeKB(0f), Main.myPlayer);
-                }
-            }
         }
 
         NPC FindClosestNPC(float maxDetectDistance) {
@@ -155,7 +138,7 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
 
 			for (int k = 0; k < Main.maxNPCs; k++) {
 				NPC target = Main.npc[k];
-				if (target.CanBeChasedBy()) {
+				if (target.CanBeChasedBy() && !whoAmIList.Contains(target.whoAmI)) {
 					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
 					if (sqrDistanceToTarget < sqrMaxDetectDistance) {
@@ -167,6 +150,21 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
             return closestNPC;
         }
 
+
+        void SpawnExplosion(Vector2 position, float radius, int damage){
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<ExplosionProj>(), damage, Projectile.knockBack, Projectile.owner, radius);      
+        
+            if (AmmoUsed == Grenades.Bee){
+                int rand = Main.rand.Next(15, 25);
+                for (int i = 0; i < rand; i++)
+                {
+                    float speedX = Main.rand.Next(-35, 36) * 0.02f;
+                    float speedY = Main.rand.Next(-35, 36) * 0.02f;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), position.X, position.Y, speedX, speedY, Main.player[Projectile.owner].beeType(), Main.player[Projectile.owner].beeDamage(damage), Main.player[Projectile.owner].beeKB(0f), Main.myPlayer);
+                }
+            }
+        }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             if (AmmoUsed == Grenades.Bouncy){
@@ -176,15 +174,28 @@ namespace GrenadesExpanded.Content.Grenades.HunterSeeker
                 if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f){
                     Projectile.velocity.Y = oldVelocity.Y * -0.9f;
                 }
-                return false;
+            }
+            else{
+                if (Projectile.velocity.X != oldVelocity.X && Math.Abs(oldVelocity.X) > 1f){
+                    Projectile.velocity.X = oldVelocity.X * -0.5f;
+                }
+                if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f){
+                    Projectile.velocity.Y = oldVelocity.Y * -0.5f;
+                }
             }
 
-            return true;
+            return false;
         }
 
         public override void OnKill(int timeLeft)
         {
-            SpawnExplosion(Radius);
+            SpawnExplosion(Projectile.Center, Radius, originalDamage);
+
+            foreach (NPC npc in Main.npc){
+                if (whoAmIList.Contains(npc.whoAmI)){
+                    SpawnExplosion(npc.Center, Radius, originalDamage);
+                }
+            }
         }
     }
 }

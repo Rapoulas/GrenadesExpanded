@@ -65,8 +65,19 @@ Items: {
 		DisplayName: Baby Boom
 		Tooltip:
 			'''
-			Grenade explosions have a 35% chance to explode again
-			with double the radius, but 0.5x damage
+			Grenade explosions have a 35% chance to explode again.
+			Extra explosion has double the radius, but 0.5x damage
+			'''
+	}
+
+	ButtomBombItem: {
+		DisplayName: Buttom Bomb
+		Tooltip:
+			'''
+			{0} Explosion Radius
+			Homes towards nearby enemies
+			Attaches a sticky bomb to enemies it passes through
+			Sticky bombs detonates once the grenade explodes
 			'''
 	}
 }
@@ -81,4 +92,5 @@ Projectiles: {
 	PineconeShrapnelProj.DisplayName: Pinecone Shrapnel Proj
 	RecursionProjectile.DisplayName: Recursion Projectile
 	BlackHoleProjectile.DisplayName: Black Hole Projectile
+	ButtonBombProjectile.DisplayName: Button Bomb Projectile
 }

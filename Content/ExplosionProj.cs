@@ -19,13 +19,14 @@ namespace GrenadesExpanded.Content
         {
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.friendly = true;
+            Projectile.friendly = false;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 2;
             Projectile.alpha = 255;
+            Projectile.localNPCHitCooldown = 0;
             Projectile.usesLocalNPCImmunity = true;
         }
 
@@ -38,7 +39,7 @@ namespace GrenadesExpanded.Content
                 return;
             }
 
-            if (Projectile.timeLeft <= 2){
+            if (Projectile.timeLeft < 2){
                 Projectile.friendly = true;
                 int diameter;
                 diameter = (int)Projectile.ai[0] * 2;
