@@ -9,7 +9,7 @@ namespace GrenadesExpanded.Content.Grenades.ButtonBomb
 {
     public class ButtomBombItem : ModItem
     {
-        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
+        public override string Texture => "GrenadesExpanded/Content/Grenades/ButtonBomb/ButtonBombProjectile";
 
         readonly float Radius = 45;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius * 10);

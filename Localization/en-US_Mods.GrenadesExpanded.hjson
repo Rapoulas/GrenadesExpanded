@@ -62,7 +62,7 @@ Items: {
 	}
 
 	BabyBoom: {
-		DisplayName: Baby Boom
+		DisplayName: Nitroglycerin Vial
 		Tooltip:
 			'''
 			Grenade explosions have a 35% chance to explode again.

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -10,7 +11,6 @@ namespace GrenadesExpanded.Content.Grenades.ButtonBomb
 {
     public class ButtonBombProjectile : ModProjectile
     {
-        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
         SoundStyle clickSFX = new("GrenadesExpanded/Content/Assets/ButtonBombSoundEffect"){
             Volume = 0.5f,
             PitchVariance = 0.2f
@@ -185,6 +185,20 @@ namespace GrenadesExpanded.Content.Grenades.ButtonBomb
             }
 
             return false;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D attachTexture = ModContent.Request<Texture2D>("GrenadesExpanded/Content/Grenades/ButtonBomb/ButtonBombAttached").Value;
+            foreach (NPC npc in Main.npc){
+                if (whoAmIList.Contains(npc.whoAmI)){
+                    Vector2 drawPosition = npc.Center - Main.screenPosition;
+				    Vector2 drawOrigin = new Vector2(attachTexture.Width, attachTexture.Height) / 2f;
+                    Main.EntitySpriteDraw(attachTexture, drawPosition, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
+                }
+            }
+
+            return true;
         }
 
         public override void OnKill(int timeLeft)
