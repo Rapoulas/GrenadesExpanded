@@ -5,16 +5,16 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace GrenadesExpanded.Content.Grenades.ButtonBomb
+namespace GrenadesExpanded.Content.Grenades.TinyPlanet
 {
-    public class ButtomBombItem : ModItem
+    public class TinyPlanetItem : ModItem
     {
-        public override string Texture => "GrenadesExpanded/Content/Grenades/ButtonBomb/ButtonBombProjectile";
-        readonly float Radius = 45;
+        public override string Texture => "GrenadesExpanded/Content/PlaceholderProjectileSprite";
+        readonly float Radius = 30;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Radius * 10);
         public override void SetDefaults()
         {
-            Item.shoot = ModContent.ProjectileType<ButtonBombProjectile>();
+            Item.shoot = ModContent.ProjectileType<TinyPlanetProjectile>();
             Item.width = 28;
             Item.height = 30;
             Item.shootSpeed = 12f;
@@ -37,8 +37,7 @@ namespace GrenadesExpanded.Content.Grenades.ButtonBomb
             int newDamage = damage;
             int timeLeft;
 
-            switch (type)
-            {
+            switch (type){
                 case ProjectileID.Grenade:
                     ammoUsed = 0;
                     break;
@@ -53,21 +52,13 @@ namespace GrenadesExpanded.Content.Grenades.ButtonBomb
                     break;
             }
 
-            if (ammoUsed == 1)
-            {
-                timeLeft = 360;
-            }
-            else
-            {
-                timeLeft = 180;
-            }
+            timeLeft = ammoUsed == 1 ? 540 : 360;
 
-            if (ammoUsed == 3)
-            {
+            if (ammoUsed == 3){
                 newDamage = damage / 10;
             }
 
-            Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<ButtonBombProjectile>(), newDamage, knockback, player.whoAmI, Radius, ammoUsed);
+            Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<TinyPlanetProjectile>(), newDamage, knockback, player.whoAmI, Radius, ammoUsed);
             proj.timeLeft = timeLeft;
             return false;
         }

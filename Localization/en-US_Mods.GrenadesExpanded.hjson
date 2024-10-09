@@ -80,6 +80,11 @@ Items: {
 			Sticky bombs detonates once the grenade explodes
 			'''
 	}
+
+	TinyPlanetItem: {
+		DisplayName: Tiny Planet
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -93,4 +98,5 @@ Projectiles: {
 	RecursionProjectile.DisplayName: Recursion Projectile
 	BlackHoleProjectile.DisplayName: Black Hole Projectile
 	ButtonBombProjectile.DisplayName: Button Bomb Projectile
+	TinyPlanetProjectile.DisplayName: Tiny Planet Projectile
 }

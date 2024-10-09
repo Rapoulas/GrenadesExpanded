@@ -197,7 +197,7 @@ namespace GrenadesExpanded.Content.Grenades.ButtonBomb
                     Main.EntitySpriteDraw(attachTexture, drawPosition, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
                 }
             }
-
+            
             return true;
         }
 

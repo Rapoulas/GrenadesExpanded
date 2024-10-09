@@ -11,7 +11,7 @@ namespace GrenadesExpanded.Content
         public override void SetDefaults(Item entity)
         {
             if (entity.type == ItemID.Grenade){
-                entity.ammo = ItemID.Grenade; 
+                entity.ammo = ItemID.Grenade;
             }
             if (entity.type == ItemID.BouncyGrenade){
                 entity.ammo = ItemID.Grenade; 
